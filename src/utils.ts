@@ -1,5 +1,5 @@
 import { Context } from 'koa';
-import { customAlphabet } from "nanoid";
+import { customAlphabet } from 'nanoid';
 
 export const setResponseOk = (
   ctx: Context,
@@ -27,4 +27,4 @@ export const setResponseError = (
   };
 };
 
-export const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 8)
+export const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 8);

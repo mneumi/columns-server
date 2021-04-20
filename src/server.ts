@@ -7,13 +7,20 @@ import { JWT_SECRET } from './constants';
 import jwt from 'koa-jwt';
 import 'reflect-metadata';
 import { setResponseError } from './utils';
+import koaBody from 'koa-body';
 
 createConnection()
   .then(() => {
     const app = new Koa();
 
     app.use(cors());
-    app.use(bodyParser());
+    // app.use(bodyParser());
+    app.use(koaBody({
+      multipart: true,
+      formidable: {
+        maxFieldsSize: 200 * 1024 * 1024
+      }
+    }))
 
     app.use(async (ctx, next) => {
       try {

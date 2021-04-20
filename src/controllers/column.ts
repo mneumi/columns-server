@@ -4,6 +4,7 @@ import { getManager } from 'typeorm';
 import * as qs from 'qs';
 
 import { Column } from '../entity/column';
+import { Post } from '../entity/post';
 
 export default class ColumnController {
   public static async showColumnDetail(ctx: Context) {
@@ -36,6 +37,7 @@ export default class ColumnController {
         picture: ctx.request.body.picture || '',
         title: ctx.request.body.title,
         desc: ctx.request.body.desc,
+        updateAt: new Date().getTime() + '',
       }
     );
 
@@ -48,7 +50,7 @@ export default class ColumnController {
     }
   }
 
-  public static async listPosts(ctx: Context) {
+  public static async listColumns(ctx: Context) {
     const columnRepository = getManager().getRepository(Column);
 
     const { size = 5, page = 0 } = qs.parse(ctx.request.querystring);
@@ -58,8 +60,21 @@ export default class ColumnController {
       skip: +size * +page,
     });
 
-    console.log(columns);
-
     setResponseOk(ctx, 200, { columns });
+  }
+
+  public static async listPostsByColumnId(ctx: Context) {
+    const postRepository = getManager().getRepository(Post);
+
+    const columnId = ctx.params.columnId;
+    const { size = 5, page = 0 } = qs.parse(ctx.request.querystring);
+
+    const posts = await postRepository.find({
+      take: +size,
+      skip: +size * +page,
+      where: { columnId },
+    });
+
+    setResponseOk(ctx, 200, { posts });
   }
 }

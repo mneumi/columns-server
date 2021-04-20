@@ -25,4 +25,10 @@ export class User {
 
   @Column()
   desc: string;
+
+  @Column()
+  createAt: string;
+
+  @Column()
+  updateAt: string;
 }

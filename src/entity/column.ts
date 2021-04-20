@@ -16,4 +16,10 @@ export class Column {
 
   @TypeOrmColumn({ nullable: false })
   desc: string;
+
+  @TypeOrmColumn()
+  createAt: string;
+
+  @TypeOrmColumn()
+  updateAt: string;
 }

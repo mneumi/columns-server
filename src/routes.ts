@@ -3,6 +3,7 @@ import Router from '@koa/router';
 import AuthController from "./controllers/auth";
 import ColumnController from './controllers/column';
 import PostController from './controllers/post';
+import UploadController from './controllers/upload';
 import UserController from './controllers/user';
 
 const unprotectedRouter = new Router();
@@ -23,7 +24,8 @@ protectedRouter.put('/users/:userId', UserController.updateUser);
 // column 相关的路由
 protectedRouter.get('/columns/:columnId', ColumnController.showColumnDetail);
 protectedRouter.put('/columns/:columnId', ColumnController.updateColumn);
-protectedRouter.get('/columns', ColumnController.listPosts);
+protectedRouter.get('/columns', ColumnController.listColumns);
+protectedRouter.get('/columns/:columnId/posts', ColumnController.listPostsByColumnId);
 
 // post 相关的路由
 protectedRouter.get('/posts/:postId', PostController.showPostDetail);
@@ -31,5 +33,8 @@ protectedRouter.post('/posts', PostController.createPost);
 protectedRouter.patch('/posts/:postId', PostController.updatePost);
 protectedRouter.delete('/posts/:postId', PostController.deletePost);
 protectedRouter.get('/posts', PostController.listPosts);
+
+// file 相关的路由
+unprotectedRouter.post("/upload", UploadController.upload);
 
 export { protectedRouter, unprotectedRouter };

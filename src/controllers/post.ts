@@ -10,15 +10,18 @@ export default class PostController {
   public static async createPost(ctx: Context) {
     const postRespository = getManager().getRepository(Post);
 
-    const { content, pictrue = '', title } = ctx.request.body;
+    const { content, picture = '', title } = ctx.request.body;
 
+    const currentTime = new Date().getTime() + '';
     const newPost = new Post();
 
     newPost.columnId = ctx.state.user.columnId;
     newPost.postId = nanoid();
     newPost.content = content;
-    newPost.picture = pictrue;
+    newPost.picture = picture;
     newPost.title = title;
+    newPost.createAt = currentTime;
+    newPost.updateAt = currentTime;
 
     await postRespository.save(newPost);
 
@@ -47,8 +50,6 @@ export default class PostController {
 
     const post = await postRepository.findOne({ postId, columnId });
 
-    console.log(post);
-
     if (!post || post.postId !== postId) {
       setResponseError(ctx, 403, '无权进行此操作');
       return;
@@ -60,6 +61,7 @@ export default class PostController {
         title: ctx.request.body.title,
         content: ctx.request.body.content,
         picture: ctx.request.body.picture || post.picture,
+        updateAt: new Date().getTime() + '',
       }
     );
 

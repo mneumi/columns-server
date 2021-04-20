@@ -19,4 +19,10 @@ export class Post {
 
   @Column()
   picture: string;
+
+  @Column()
+  createAt: string;
+
+  @Column()
+  updateAt: string;
 }

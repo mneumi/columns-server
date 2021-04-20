@@ -33,13 +33,17 @@ export default class AuthController {
     const columnRespository = getManager().getRepository(Column);
     const userRepository = getManager().getRepository(User);
 
+    const currentTime = new Date().getTime() + "";
+
     const newColumnId = nanoid();
 
     const newColumn = new Column();
     newColumn.columnId = newColumnId;
     newColumn.desc = "还没有留下专栏简介哦";
-    newColumn.picture = "";
+    newColumn.picture = "https://columns-oss.oss-cn-shenzhen.aliyuncs.com/default-image.png";
     newColumn.title = "还没有设置专栏标题哦";
+    newColumn.createAt = currentTime;
+    newColumn.updateAt = currentTime;
 
     await columnRespository.save(newColumn);
 
@@ -49,8 +53,10 @@ export default class AuthController {
     newUser.password = await argon2.hash(ctx.request.body.password);
     newUser.userId = nanoid();
     newUser.desc = "还没有留下简介哦";
-    newUser.avatar = "";
+    newUser.avatar = "https://columns-oss.oss-cn-shenzhen.aliyuncs.com/default-image.png";
     newUser.columnId = newColumnId;
+    newUser.createAt = currentTime;
+    newUser.updateAt = currentTime;
     
     try {
       const user = await userRepository.save(newUser);
