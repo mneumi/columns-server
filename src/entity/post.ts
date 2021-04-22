@@ -14,6 +14,9 @@ export class Post {
   @Column()
   title: string;
 
+  @Column()
+  desc: string;
+
   @Column({ type: "text" })
   content: string;
 

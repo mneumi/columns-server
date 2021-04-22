@@ -5,12 +5,13 @@ import * as qs from 'qs';
 
 import { Post } from '../entity/post';
 import { nanoid } from '../utils';
+import { User } from '../entity/user';
 
 export default class PostController {
   public static async createPost(ctx: Context) {
     const postRespository = getManager().getRepository(Post);
 
-    const { content, picture = '', title } = ctx.request.body;
+    const { content, picture = '', title, desc } = ctx.request.body;
 
     const currentTime = new Date().getTime() + '';
     const newPost = new Post();
@@ -20,12 +21,13 @@ export default class PostController {
     newPost.content = content;
     newPost.picture = picture;
     newPost.title = title;
+    newPost.desc = desc;
     newPost.createAt = currentTime;
     newPost.updateAt = currentTime;
 
     await postRespository.save(newPost);
 
-    setResponseOk(ctx, 200, { newPost });
+    setResponseOk(ctx, 200, newPost);
   }
 
   public static async showPostDetail(ctx: Context) {
@@ -35,8 +37,12 @@ export default class PostController {
 
     const post = await postRepository.findOne({ postId });
 
+    const userRepository = getManager().getRepository(User);
+
+    const user = await userRepository.findOne({ columnId: post?.columnId })
+
     if (post) {
-      setResponseOk(ctx, 200, { post });
+      setResponseOk(ctx, 200, { post, user });
     } else {
       setResponseError(ctx, 404, '找不到文章信息');
     }
@@ -58,9 +64,10 @@ export default class PostController {
     await postRepository.update(
       { postId },
       {
-        title: ctx.request.body.title,
-        content: ctx.request.body.content,
+        title: ctx.request.body.title || post.title,
+        content: ctx.request.body.content || post.content,
         picture: ctx.request.body.picture || post.picture,
+        desc: ctx.request.body.desc || post.desc,
         updateAt: new Date().getTime() + '',
       }
     );
@@ -79,6 +86,8 @@ export default class PostController {
 
     const postId = ctx.params.postId;
     const columnId = ctx.state.user.columnId;
+
+    console.log(postId, columnId);
 
     const post = await postRepository.findOne({ postId, columnId });
 
