@@ -5,6 +5,7 @@ import ColumnController from './controllers/column';
 import PostController from './controllers/post';
 import UploadController from './controllers/upload';
 import UserController from './controllers/user';
+import { limitMiddleware } from './limitMiddleware';
 
 const unprotectedRouter = new Router();
 
@@ -30,7 +31,7 @@ protectedRouter.get('/columns/:columnId/posts', ColumnController.listPostsByColu
 // post 相关的路由
 protectedRouter.get('/posts/:postId', PostController.showPostDetail);
 protectedRouter.post('/posts', PostController.createPost);
-protectedRouter.patch('/posts/:postId', PostController.updatePost);
+protectedRouter.patch('/posts/:postId', limitMiddleware, PostController.updatePost);
 protectedRouter.delete('/posts/:postId', PostController.deletePost);
 protectedRouter.get('/posts', PostController.listPosts);
 

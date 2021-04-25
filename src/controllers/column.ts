@@ -53,7 +53,7 @@ export default class ColumnController {
   public static async listColumns(ctx: Context) {
     const columnRepository = getManager().getRepository(Column);
 
-    const { size = 5, page = 0 } = qs.parse(ctx.request.querystring);
+    const { size = 6, page = 0 } = qs.parse(ctx.request.querystring);
 
     const columns = await columnRepository.find({
       take: +size,

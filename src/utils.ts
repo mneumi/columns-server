@@ -1,5 +1,6 @@
 import { Context } from 'koa';
 import { customAlphabet } from 'nanoid';
+import { createContext } from 'node:vm';
 
 export const setResponseOk = (
   ctx: Context,
@@ -24,6 +25,14 @@ export const setResponseError = (
     data: {
       message,
     },
+  };
+};
+
+export const setLimitError = (ctx: Context, message: string) => {
+  ctx.status = 403;
+  ctx.body = {
+    error: 2,
+    data: { message },
   };
 };
 
