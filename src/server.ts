@@ -13,7 +13,9 @@ createConnection()
   .then(() => {
     const app = new Koa();
 
-    app.use(cors());
+    app.use(cors({
+      origin: "http://localhost:8080" // 修改为前端上线地址
+    }));
     app.use(
       koaBody({
         multipart: true,
