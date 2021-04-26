@@ -1,20 +1,19 @@
 import Koa from 'koa';
+import koaBody from 'koa-body';
 import cors from '@koa/cors';
-import bodyParser from 'koa-bodyparser';
+import jwt from 'koa-jwt';
+import 'reflect-metadata';
+
 import { protectedRouter, unprotectedRouter } from './routes';
 import { createConnection } from 'typeorm';
 import { JWT_SECRET } from './constants';
-import jwt from 'koa-jwt';
-import 'reflect-metadata';
 import { setResponseError } from './utils';
-import koaBody from 'koa-body';
 
 createConnection()
   .then(() => {
     const app = new Koa();
 
     app.use(cors());
-    // app.use(bodyParser());
     app.use(koaBody({
       multipart: true,
       formidable: {

@@ -17,25 +17,26 @@ const protectedRouter = new Router();
 
 // users 相关的路由
 // protectedRouter.get('/users', UserController.listUsers);
-protectedRouter.post('/users', UserController.getUserInfoByToken);
-protectedRouter.get('/users/:userId', UserController.showUserDetail);
-protectedRouter.put('/users/:userId', UserController.updateUser);
 // protectedRouter.delete('/users/:userId', UserController.deleteUser);
+protectedRouter.get('/users/:userId', UserController.showUserDetail);
+protectedRouter.post('/users', UserController.getUserInfoByToken);
+protectedRouter.put('/users/:userId', limitMiddleware, UserController.updateUser);
+
 
 // column 相关的路由
-protectedRouter.get('/columns/:columnId', ColumnController.showColumnDetail);
-protectedRouter.put('/columns/:columnId', ColumnController.updateColumn);
 protectedRouter.get('/columns', ColumnController.listColumns);
+protectedRouter.get('/columns/:columnId', ColumnController.showColumnDetail);
 protectedRouter.get('/columns/:columnId/posts', ColumnController.listPostsByColumnId);
+protectedRouter.put('/columns/:columnId', limitMiddleware, ColumnController.updateColumn);
 
 // post 相关的路由
+// protectedRouter.get('/posts', PostController.listPosts);
 protectedRouter.get('/posts/:postId', PostController.showPostDetail);
-protectedRouter.post('/posts', PostController.createPost);
+protectedRouter.post('/posts', limitMiddleware, PostController.createPost);
 protectedRouter.patch('/posts/:postId', limitMiddleware, PostController.updatePost);
-protectedRouter.delete('/posts/:postId', PostController.deletePost);
-protectedRouter.get('/posts', PostController.listPosts);
+protectedRouter.delete('/posts/:postId', limitMiddleware, PostController.deletePost);
 
 // file 相关的路由
-unprotectedRouter.post("/upload", UploadController.upload);
+protectedRouter.post("/upload", limitMiddleware, UploadController.upload);
 
 export { protectedRouter, unprotectedRouter };

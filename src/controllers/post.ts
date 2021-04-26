@@ -106,11 +106,19 @@ export default class PostController {
 
     const { size = 5, page = 0 } = qs.parse(ctx.request.querystring);
 
+    const total = await postRepository.count();
+
     const posts = await postRepository.find({
       take: +size,
       skip: +size * +page,
     });
 
-    setResponseOk(ctx, 200, { posts });
+    const pagination = {
+      page: +page,
+      size: +size,
+      total,
+    };
+
+    setResponseOk(ctx, 200, { list: posts, pagination });
   }
 }

@@ -1,6 +1,6 @@
 import { Context } from 'koa';
 import { setResponseError, setResponseOk } from '../utils';
-import { getManager } from 'typeorm';
+import { getManager, LessThan } from 'typeorm';
 import * as qs from 'qs';
 
 import { Column } from '../entity/column';
@@ -53,28 +53,54 @@ export default class ColumnController {
   public static async listColumns(ctx: Context) {
     const columnRepository = getManager().getRepository(Column);
 
-    const { size = 6, page = 0 } = qs.parse(ctx.request.querystring);
+    const { size = 3, page = 1 } = qs.parse(ctx.request.querystring);
 
-    const columns = await columnRepository.find({
-      take: +size,
-      skip: +size * +page,
+    const whereCondition = { id: LessThan(11) };
+
+    const total = await columnRepository.count({
+      where: whereCondition,
     });
 
-    setResponseOk(ctx, 200, { columns });
+    const columns = await columnRepository.find({
+      where: whereCondition,
+      take: +size,
+      skip: +size * (+page - 1),
+    });
+
+    const pagination = {
+      page: +page,
+      size: +size,
+      total,
+    };
+
+    setResponseOk(ctx, 200, { list: columns, pagination });
   }
 
   public static async listPostsByColumnId(ctx: Context) {
     const postRepository = getManager().getRepository(Post);
 
     const columnId = ctx.params.columnId;
-    const { size = 5, page = 0 } = qs.parse(ctx.request.querystring);
+
+    const { size = 3, page = 1 } = qs.parse(ctx.request.querystring);
+
+    const total = await postRepository.count({
+      where: {
+        columnId,
+      },
+    });
 
     const posts = await postRepository.find({
       take: +size,
-      skip: +size * +page,
+      skip: +size * (+page - 1),
       where: { columnId },
     });
 
-    setResponseOk(ctx, 200, { posts });
+    const pagination = {
+      page: +page,
+      size: +size,
+      total,
+    };
+
+    setResponseOk(ctx, 200, { list: posts, pagination });
   }
 }
