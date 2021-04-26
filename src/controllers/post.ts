@@ -57,7 +57,7 @@ export default class PostController {
     const post = await postRepository.findOne({ postId, columnId });
 
     if (!post || post.postId !== postId) {
-      setResponseError(ctx, 403, '无权进行此操作');
+      setResponseError(ctx, 401, '无权限进行此操作');
       return;
     }
 
@@ -92,7 +92,7 @@ export default class PostController {
     const post = await postRepository.findOne({ postId, columnId });
 
     if (!post || post.postId !== postId) {
-      setResponseError(ctx, 403, '无权进行此操作');
+      setResponseError(ctx, 401, '无权限进行此操作');
       return;
     }
 

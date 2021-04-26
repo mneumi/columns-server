@@ -25,7 +25,7 @@ export default class ColumnController {
     const columnId = ctx.params.columnId;
 
     if (columnId !== ctx.state.user.columnId) {
-      setResponseError(ctx, 403, '无权进行此操作');
+      setResponseError(ctx, 401, '无权限进行此操作');
       return;
     }
 

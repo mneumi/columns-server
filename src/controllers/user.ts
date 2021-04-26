@@ -42,7 +42,7 @@ export default class UserController {
     const userId = ctx.params.userId;
 
     if (userId !== ctx.state.user.userId) {
-      setResponseError(ctx, 403, '无权进行此操作');
+      setResponseError(ctx, 401, '无权限进行此操作');
       return;
     }
 
@@ -78,7 +78,7 @@ export default class UserController {
     const userId = +ctx.params.id;
 
     if (userId !== +ctx.state.user.id) {
-      setResponseError(ctx, 403, '无权进行此操作');
+      setResponseError(ctx, 401, '无权限进行此操作');
       return;
     }
 
