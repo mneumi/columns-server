@@ -39,7 +39,7 @@ export default class PostController {
 
     const userRepository = getManager().getRepository(User);
 
-    const user = await userRepository.findOne({ columnId: post?.columnId })
+    const user = await userRepository.findOne({ columnId: post?.columnId });
 
     if (post) {
       setResponseOk(ctx, 200, { post, user });

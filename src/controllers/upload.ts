@@ -24,7 +24,7 @@ export default class UploadController {
         return;
       }
     } catch (err) {
-      setResponseError(ctx, 500, "服务器错误，上传文件失败")
+      setResponseError(ctx, 500, '服务器错误，上传文件失败');
     }
   }
 }

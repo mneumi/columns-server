@@ -14,12 +14,14 @@ createConnection()
     const app = new Koa();
 
     app.use(cors());
-    app.use(koaBody({
-      multipart: true,
-      formidable: {
-        maxFieldsSize: 200 * 1024 * 1024
-      }
-    }))
+    app.use(
+      koaBody({
+        multipart: true,
+        formidable: {
+          maxFieldsSize: 200 * 1024 * 1024,
+        },
+      })
+    );
 
     app.use(async (ctx, next) => {
       try {
@@ -36,7 +38,7 @@ createConnection()
 
     app.use(unprotectedRouter.routes()).use(unprotectedRouter.allowedMethods());
 
-    app.use(jwt({ secret: JWT_SECRET }).unless({ method: "GET" }));
+    app.use(jwt({ secret: JWT_SECRET }).unless({ method: 'GET' }));
 
     app.use(protectedRouter.routes()).use(protectedRouter.allowedMethods());
 

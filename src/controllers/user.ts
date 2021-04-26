@@ -35,7 +35,7 @@ export default class UserController {
       setResponseOk(ctx, 200, { user });
     } else {
       setResponseError(ctx, 404, '找不到用户');
-    } 
+    }
   }
 
   public static async updateUser(ctx: Context) {
@@ -48,11 +48,14 @@ export default class UserController {
 
     const userRepository = getManager().getRepository(User);
 
-    await userRepository.update({ userId }, {
-      nickname: ctx.request.body.nickname,
-      desc: ctx.request.body.desc,
-      avatar: ctx.request.body.avatar || ""
-    });
+    await userRepository.update(
+      { userId },
+      {
+        nickname: ctx.request.body.nickname,
+        desc: ctx.request.body.desc,
+        avatar: ctx.request.body.avatar || '',
+      }
+    );
 
     const updatedUser = await userRepository.findOne({ userId });
 

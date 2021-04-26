@@ -40,7 +40,7 @@ export default class AuthController {
       '温馨提示：为保证服务器数据安全，暂不提供注册服务，但提供了体验用的测试账号，请到登录页面进行体验，谢谢！'
     );
 
-    return;
+    return; // 阻断执行，为了保证服务器安全，暂不开放注册功能
 
     const columnRespository = getManager().getRepository(Column);
     const userRepository = getManager().getRepository(User);
